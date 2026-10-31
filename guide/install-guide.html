@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>คู่มือติดตั้ง JitHome</title>
+<style>
+  @page { size: A4; margin: 16mm 16mm 18mm; }
+  :root { --ink:#1f2933; --muted:#5b6770; --brand:#0f6e8c; --brand-lt:#e6f3f7; --warn:#9a5b00; --warn-lt:#fff6e5; --red:#b42318; --red-lt:#fdecea; --line:#d6dde2; }
+  * { box-sizing: border-box; }
+  body { font-family: 'Loma', 'FreeSerif', sans-serif; color: var(--ink); font-size: 10.5pt; line-height: 1.6; margin: 0; background:#fff; }
+  h1, h2, h3 { line-height: 1.35; margin: 0; }
+  h2 { font-size: 16pt; color: var(--brand); margin: 0 0 8pt; padding-bottom: 4pt; border-bottom: 2px solid var(--brand); }
+  h3 { font-size: 12.5pt; margin: 12pt 0 4pt; }
+  p { margin: 0 0 6pt; }
+  a { color: var(--brand); text-decoration: none; }
+  code, .mono { font-family: 'DejaVu Sans Mono', monospace; font-size: 9.5pt; background: #f1f4f6; padding: 0 3pt; border-radius: 3pt; word-break: break-all; }
+  pre { font-family: 'DejaVu Sans Mono', monospace; font-size: 9pt; background: #f1f4f6; padding: 6pt 8pt; border-radius: 5pt; white-space: pre-wrap; word-break: break-all; margin: 4pt 0 8pt; }
+  .page { page-break-after: auto; }
+  .cover { page-break-after: always; }
+  section { break-inside: auto; }
+  h2 { break-after: avoid; }
+  table, .note, .warn, .danger, pre { break-inside: avoid; }
+  table.trouble { break-inside: auto; }
+  tr { break-inside: avoid; }
+  .page:last-child { page-break-after: auto; }
+  section { margin-bottom: 14pt; }
+  .avoid { break-inside: avoid; }
+
+  /* cover */
+  .cover { height: 255mm; display: flex; flex-direction: column; justify-content: center; text-align: center; }
+  .cover .logo { font-size: 54pt; line-height: 1; }
+  .cover h1 { font-size: 34pt; color: var(--brand); margin-top: 10pt; }
+  .cover .sub { font-size: 16pt; margin-top: 6pt; }
+  .cover .desc { color: var(--muted); margin-top: 18pt; font-size: 12pt; }
+  .cover .meta { margin: 36pt auto 0; border: 1px solid var(--line); border-radius: 8pt; padding: 10pt 16pt; text-align: left; max-width: 125mm; font-size: 11pt; }
+  .cover .meta div { display: flex; gap: 8pt; }
+  .cover .meta b { min-width: 30mm; }
+
+  /* boxes */
+  .note, .warn, .danger { border-radius: 6pt; padding: 7pt 10pt; margin: 6pt 0 10pt; font-size: 11pt; }
+  .note { background: var(--brand-lt); border-left: 4pt solid var(--brand); }
+  .warn { background: var(--warn-lt); border-left: 4pt solid #e3a008; }
+  .danger { background: var(--red-lt); border-left: 4pt solid var(--red); }
+  .note b:first-child, .warn b:first-child, .danger b:first-child { display: block; }
+
+  /* steps */
+  .step { display: flex; gap: 10pt; margin: 0 0 12pt; break-inside: avoid; }
+  .num { flex: 0 0 22pt; height: 22pt; border-radius: 50%; background: var(--brand); color: #fff; font-weight: bold; text-align: center; line-height: 22pt; font-size: 11pt; margin-top: 2pt; }
+  .step .body { flex: 1; min-width: 0; }
+  .step .title { font-weight: bold; font-size: 12.5pt; }
+  ol, ul { margin: 2pt 0 6pt; padding-left: 18pt; }
+  li { margin: 1pt 0; }
+  .btn { display: inline-block; border: 1px solid #9fb3bf; border-radius: 4pt; padding: 0 5pt; font-size: 10pt; background: #f7fafb; white-space: nowrap; }
+  .path { color: var(--brand); font-weight: bold; }
+
+  table { width: 100%; border-collapse: collapse; margin: 4pt 0 10pt; font-size: 10.5pt; }
+  th, td { border: 1px solid var(--line); padding: 4pt 6pt; vertical-align: top; text-align: left; }
+  th { background: #f1f4f6; }
+  td.c, th.c { text-align: center; }
+  .check td:first-child { width: 14pt; text-align: center; font-size: 12pt; }
+  .footer-note { color: var(--muted); font-size: 9.5pt; margin-top: 10pt; }
+</style>
+</head>
+<body>
+
+<!-- ═════════ ปก ═════════ -->
+<div class="page cover">
+  <div class="logo">🏥</div>
+  <h1>JitHome</h1>
+  <div class="sub">คู่มือติดตั้งสำหรับ รพ.สต.</div>
+  <div class="desc">ระบบติดตามผู้ป่วยจิตเวชในชุมชน<br>นัดฉีดยา · นัดพบแพทย์ · เยี่ยมบ้าน · แบบประเมิน · ส่งต่อ รพ. แม่ข่าย · แจ้งเตือน LINE / Telegram</div>
+  <div class="meta">
+    <div><b>ชุดติดตั้ง</b><span class="mono">github.com/songkon202-sara/jithome-template</span></div>
+    <div><b>ใช้เวลา</b><span>ประมาณ 30–60 นาที ไม่ต้องเขียนโปรแกรม</span></div>
+    <div><b>ค่าใช้จ่าย</b><span>ฟรีสำหรับเริ่มต้น (GitHub + Supabase แผนฟรี)</span></div>
+    <div><b>ฉบับ</b><span>ตุลาคม 2569</span></div>
+  </div>
+</div>
+
+<!-- ═════════ ก่อนเริ่ม ═════════ -->
+<div class="page">
+<section>
+  <h2>ก่อนเริ่ม</h2>
+  <p>แต่ละหน่วยงาน<b>ติดตั้งและดูแลระบบของตัวเอง</b> ด้วยบัญชี GitHub และ Supabase ของหน่วยงาน
+  ข้อมูลผู้ป่วยของแต่ละแห่งแยกขาดจากกัน หน่วยงานอื่น (รวมถึงผู้พัฒนา) เข้าถึงไม่ได้</p>
+
+  <h3>สิ่งที่ต้องเตรียม</h3>
+  <table>
+    <tr><th>สิ่งที่ต้องมี</th><th>ใช้ทำอะไร</th><th>ค่าใช้จ่าย</th></tr>
+    <tr><td>บัญชี <b>GitHub</b> ของหน่วยงาน<br><span class="mono">github.com</span></td><td>เก็บตัวเว็บ และเปิดเป็นเว็บไซต์</td><td>ฟรี</td></tr>
+    <tr><td>บัญชี <b>Supabase</b> ของหน่วยงาน<br><span class="mono">supabase.com</span></td><td>ฐานข้อมูลและระบบเข้าสู่ระบบ</td><td>ฟรีสำหรับเริ่มต้น</td></tr>
+    <tr><td>อีเมลของผู้ดูแลระบบ</td><td>สมัครบัญชีแอดมินคนแรก</td><td>—</td></tr>
+    <tr><td>มือถือที่ลงแอป <b>Google Authenticator</b> หรือ Authy</td><td>รหัสยืนยัน 2 ชั้น (2FA) ของแอดมินและเจ้าหน้าที่</td><td>ฟรี</td></tr>
+    <tr><td>(ไม่บังคับ) กลุ่ม LINE / Telegram ของเจ้าหน้าที่</td><td>รับแจ้งเตือน</td><td>ฟรี</td></tr>
+  </table>
+
+  <div class="danger"><b>⚠️ ข้อมูลผู้ป่วยจิตเวชเป็นข้อมูลอ่อนไหวตาม พ.ร.บ.คุ้มครองข้อมูลส่วนบุคคล (PDPA)</b>
+  ก่อนใช้งานจริง ควรปรึกษาเจ้าหน้าที่คุ้มครองข้อมูลส่วนบุคคล (DPO) ของหน่วยงานหรือ สสจ.
+  และ<b>ห้ามนำไฟล์รายชื่อผู้ป่วยใส่ไว้ใน GitHub เด็ดขาด</b> เพราะ repo เป็นแบบสาธารณะ ทุกคนเปิดอ่านได้</div>
+</section>
+
+<section>
+  <h2>ภาพรวม 6 ขั้นตอน</h2>
+  <table>
+    <tr><th class="c">ขั้น</th><th>ทำที่</th><th>ทำอะไร</th><th class="c">เวลา</th></tr>
+    <tr><td class="c">1</td><td>Supabase</td><td>สร้างฐานข้อมูล รัน <code>install.sql</code> และตั้งค่าการเข้าสู่ระบบ</td><td class="c">15 นาที</td></tr>
+    <tr><td class="c">2</td><td>Supabase</td><td>ติดตั้งฟังก์ชันแจ้งเตือน 2 ตัว</td><td class="c">10 นาที</td></tr>
+    <tr><td class="c">3</td><td>GitHub</td><td>คัดลอกชุดติดตั้ง แก้ <code>config.js</code> และเปิดเว็บ</td><td class="c">10 นาที</td></tr>
+    <tr><td class="c">4</td><td>Supabase</td><td>ผูกที่อยู่เว็บกับฐานข้อมูล</td><td class="c">2 นาที</td></tr>
+    <tr><td class="c">5</td><td>เว็บของหน่วยงาน</td><td>สร้างบัญชีแอดมินคนแรก</td><td class="c">5 นาที</td></tr>
+    <tr><td class="c">6</td><td>หน้าแอดมิน</td><td>ตั้งค่าหน่วยงาน นำเข้าผู้ป่วย เพิ่ม อสม.</td><td class="c">10+ นาที</td></tr>
+  </table>
+  <div class="note"><b>💡 แนะนำ</b>ทำทุกขั้นบนคอมพิวเตอร์ และเปิดคู่มือนี้คู่กันไป ทำตามลำดับ อย่าข้ามขั้น</div>
+</section>
+
+</div>
+
+<!-- ═════════ ขั้นที่ 1 ═════════ -->
+<div class="page">
+<section>
+  <h2>ขั้นที่ 1 · สร้างฐานข้อมูล (Supabase)</h2>
+
+  <div class="step"><div class="num">1</div><div class="body">
+    <div class="title">สร้างโปรเจกต์ใหม่</div>
+    <ol>
+      <li>เข้า <span class="mono">supabase.com</span> → ล็อกอิน → กด <span class="btn">New project</span></li>
+      <li>ตั้งชื่อ เช่น <code>jithome-ชื่อตำบล</code></li>
+      <li>Region: <b>Southeast Asia (Singapore)</b></li>
+      <li>ตั้งรหัสผ่านฐานข้อมูล แล้ว<b>จดเก็บไว้ในที่ปลอดภัย</b></li>
+      <li>กด <span class="btn">Create new project</span> แล้วรอ 1–2 นาที</li>
+    </ol>
+  </div></div>
+
+  <div class="step"><div class="num">2</div><div class="body">
+    <div class="title">รันไฟล์ติดตั้งฐานข้อมูล</div>
+    <ol>
+      <li>เปิดไฟล์ <code>sql/install.sql</code> ใน repo ชุดติดตั้ง → กด <span class="btn">Copy raw file</span> (หรือเลือกทั้งหมดแล้วคัดลอก)</li>
+      <li>Supabase เมนูซ้าย <span class="path">SQL Editor</span> → <span class="btn">New query</span> → วาง → กด <span class="btn">Run</span></li>
+      <li>ถ้ามีหน้าต่าง <i>Potential issue detected</i> ให้กด <span class="btn">Run without RLS</span><br>
+          <span style="color:var(--muted)">(ปลอดภัย สคริปต์เปิด RLS ให้ครบทุกตารางเอง)</span></li>
+      <li>ผลที่ถูกต้อง: ตารางด้านล่างขึ้นคำว่า <b>ติดตั้งเสร็จ</b></li>
+    </ol>
+    <div class="warn"><b>ถ้าขึ้น “ยังไม่ครบ: pg_net” หรือ “pg_cron”</b>
+    เมนู <span class="path">Database → Extensions</span> → ค้นหาชื่อนั้น → เปิด → กลับมารัน install.sql อีกครั้ง (รันซ้ำได้ ไม่ลบข้อมูล)</div>
+  </div></div>
+
+  <div class="step"><div class="num">3</div><div class="body">
+    <div class="title">ตั้งค่าการเข้าสู่ระบบ</div>
+    <ol>
+      <li><span class="path">Authentication → Sign In / Providers → Email</span> → <b>ปิด</b> Confirm email → Save<br>
+          <span style="color:var(--muted)">(อสม. สมัครด้วยเบอร์โทร ไม่มีอีเมลจริง)</span></li>
+      <li><span class="path">Authentication → Multi-Factor</span> → <b>เปิด</b> TOTP → Save</li>
+    </ol>
+  </div></div>
+
+  <div class="step"><div class="num">4</div><div class="body">
+    <div class="title">จด 2 ค่านี้ไว้ใช้ในขั้นที่ 3</div>
+    <p><span class="path">Project Settings → API</span> (หรือ API Keys)</p>
+    <ul>
+      <li><b>Project URL</b> เช่น <code>https://abcdefghijkl.supabase.co</code></li>
+      <li><b>anon public key</b> (ขึ้นต้น <code>eyJ...</code>) หรือ <b>publishable key</b> (ขึ้นต้น <code>sb_publishable_...</code>)</li>
+    </ul>
+    <div class="danger"><b>⛔ ห้ามใช้ service_role key / secret key กับเว็บเด็ดขาด</b>
+    key นี้เปิดข้อมูลได้ทั้งหมด ถ้าหลุดออกไป ใครก็อ่านข้อมูลผู้ป่วยได้</div>
+  </div></div>
+</section>
+</div>
+
+<!-- ═════════ ขั้นที่ 2-3 ═════════ -->
+<div class="page">
+<section style="break-before: page">
+  <h2>ขั้นที่ 2 · ติดตั้งฟังก์ชันแจ้งเตือน (Edge Functions)</h2>
+  <p>Supabase → <span class="path">Edge Functions</span> → <span class="btn">Deploy a new function</span> → <span class="btn">Via Editor</span> ทำทีละตัว:</p>
+  <ol>
+    <li>ลบโค้ดตัวอย่างในช่องแก้ไขออกให้หมด</li>
+    <li>เปิดไฟล์ตามตารางใน repo → คัดลอกโค้ดทั้งหมด → วาง</li>
+    <li>ตั้งชื่อฟังก์ชัน<b>ให้ตรงตามตารางทุกตัวอักษร</b> → เปิด <b>Verify JWT</b> ไว้ (ค่าเริ่มต้น) → <span class="btn">Deploy</span></li>
+  </ol>
+  <table>
+    <tr><th>ชื่อฟังก์ชัน</th><th>วางโค้ดจาก</th><th>ใช้ทำอะไร</th></tr>
+    <tr><td><code>notify</code></td><td><code>supabase/functions/notify/index.ts</code></td><td>ส่ง LINE / Telegram จากแอป</td></tr>
+    <tr><td><code>reset-aosomo-password</code></td><td><code>supabase/functions/reset-aosomo-password/index.ts</code></td><td>แอดมินรีเซ็ตรหัสผ่าน อสม.</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2>ขั้นที่ 3 · สร้างเว็บ (GitHub)</h2>
+
+  <div class="step"><div class="num">1</div><div class="body">
+    <div class="title">คัดลอกชุดติดตั้งมาเป็นของหน่วยงาน</div>
+    <ol>
+      <li>เปิด <span class="mono">github.com/songkon202-sara/jithome-template</span></li>
+      <li>กดปุ่มเขียว <span class="btn">Use this template</span> → <span class="btn">Create a new repository</span></li>
+      <li>ตั้งชื่อ เช่น <code>jithome</code> · เลือก <b>Public</b> (GitHub Pages แบบฟรีต้องเป็น Public) → <span class="btn">Create repository</span></li>
+    </ol>
+  </div></div>
+
+  <div class="step"><div class="num">2</div><div class="body">
+    <div class="title">แก้ไฟล์ config.js (ไฟล์เดียวที่ต้องแก้)</div>
+    <p>ใน repo ใหม่ เปิดไฟล์ <code>config.js</code> → กดรูปดินสอ ✏️ → แก้ 4 ค่า:</p>
+<pre>SUPABASE_URL: 'https://abcdefghijkl.supabase.co',   // Project URL จากขั้นที่ 1
+SUPABASE_ANON_KEY: 'eyJ...',                          // anon / publishable key
+HOSPITAL_NAME: 'รพ.สต.บ้านตัวอย่าง',
+VILLAGES: ['หมู่ 1', 'หมู่ 2', 'หมู่ 3', 'นอกเขต'],</pre>
+    <p>→ กด <span class="btn">Commit changes</span></p>
+    <div class="note"><b>💡 รายชื่อหมู่บ้าน</b>ต้องสะกดตรงกับคอลัมน์หมู่บ้านในไฟล์รายชื่อผู้ป่วยที่จะนำเข้า เพราะระบบใช้ชื่อนี้กำหนดว่า อสม. เห็นผู้ป่วยหมู่ไหน</div>
+  </div></div>
+
+  <div class="step"><div class="num">3</div><div class="body">
+    <div class="title">เปิดเว็บไซต์</div>
+    <ol>
+      <li><span class="path">Settings → Pages</span> → Source: <b>Deploy from a branch</b> → Branch: <b>main</b> / <b>(root)</b> → <span class="btn">Save</span></li>
+      <li>รอ 1–2 นาที เว็บจะอยู่ที่ <code>https://ชื่อบัญชี.github.io/ชื่อrepo/</code></li>
+    </ol>
+  </div></div>
+</section>
+</div>
+
+<!-- ═════════ ขั้นที่ 4-6 ═════════ -->
+<div class="page">
+<section class="avoid">
+  <h2>ขั้นที่ 4 · ผูกเว็บกับฐานข้อมูล</h2>
+  <p>Supabase → <span class="path">Authentication → URL Configuration</span></p>
+  <ul>
+    <li><b>Site URL</b> = ที่อยู่เว็บจากขั้นที่ 3</li>
+    <li><b>Redirect URLs</b> → <span class="btn">Add URL</span> → ใส่ที่อยู่เดียวกัน → Save<br>
+        <span style="color:var(--muted)">(ถ้าไม่ทำ ลิงก์ “ลืมรหัสผ่าน” ในอีเมลจะใช้ไม่ได้)</span></li>
+  </ul>
+</section>
+
+<section>
+  <h2>ขั้นที่ 5 · สร้างบัญชีแอดมินคนแรก</h2>
+  <div class="warn"><b>⏱ ทำขั้นนี้ทันทีหลังเปิดเว็บ</b>บัญชีแรกที่สมัครในระบบจะเป็นแอดมินอัตโนมัติ ถ้าคนอื่นสมัครก่อน คนนั้นจะได้เป็นแอดมิน</div>
+  <ol>
+    <li>เปิดเว็บ → <span class="btn">สมัครสมาชิก</span> ด้วยอีเมลของผู้ดูแลระบบ</li>
+    <li>เข้าสู่ระบบ → ระบบให้ตั้ง 2FA → เปิดแอป Google Authenticator สแกน QR → กรอกรหัส 6 หลัก</li>
+    <li>อ่านข้อตกลงรักษาความลับ → ติ๊กยอมรับ → <span class="btn">ยอมรับและเข้าใช้งาน</span></li>
+  </ol>
+  <p>ผู้ที่สมัครหลังจากนี้ทุกคนต้อง<b>รอแอดมินอนุมัติ</b>ก่อนเข้าใช้งาน</p>
+</section>
+
+<section>
+  <h2>ขั้นที่ 6 · เริ่มใช้งาน</h2>
+  <table>
+    <tr><th>งาน</th><th>ทำที่</th></tr>
+    <tr><td><b>ผู้รับแจ้งเหตุข้อมูลรั่วไหล (PDPA)</b><br>ใส่ชื่อ ตำแหน่ง เบอร์โทร เช่น <i>นายสมชาย ใจดี พยาบาลวิชาชีพ โทร 08x-xxx-xxxx</i><br><span style="color:var(--muted)">ชื่อนี้แสดงในข้อตกลงรักษาความลับที่ทุกคนต้องกดยอมรับ</span></td><td>หน้าแอดมิน → ช่อง “ผู้รับแจ้งเหตุข้อมูลรั่วไหล” → บันทึก</td></tr>
+    <tr><td><b>นำเข้ารายชื่อผู้ป่วย</b> (Excel / CSV / HOSxP)<br><span style="color:var(--muted)">มีปุ่มดาวน์โหลดไฟล์ตัวอย่าง</span></td><td>หน้าแอดมิน → นำเข้าไฟล์</td></tr>
+    <tr><td><b>เพิ่ม อสม.</b> (ใช้เบอร์โทรเป็นชื่อผู้ใช้) หรือให้ อสม. สมัครเองแล้วอนุมัติ<br><b>ต้องกำหนดหมู่บ้านให้ อสม. ทุกคน</b></td><td>หน้าแอดมิน → สร้างบัญชี อสม. / หน้าสมาชิก</td></tr>
+    <tr><td><b>ติดตั้งบนมือถือ</b></td><td>เปิดเว็บใน Chrome / Safari → เมนู → เพิ่มลงหน้าจอหลัก</td></tr>
+  </table>
+</section>
+
+<section class="avoid">
+  <h2>การแจ้งเตือน (ไม่บังคับ)</h2>
+  <table>
+    <tr><th>ช่องทาง</th><th>ตั้งค่าที่หน้าแอดมิน</th><th>ส่งอะไร</th></tr>
+    <tr><td>LINE</td><td>Channel access token + Group ID</td><td>รายงานเยี่ยมบ้าน</td></tr>
+    <tr><td>Telegram</td><td>Bot Token (จาก @BotFather) + Chat ID</td><td>ผู้เกินนัดและนัดพรุ่งนี้ ทุกวัน 07:00 น.</td></tr>
+    <tr><td>ส่งต่อ รพ. แม่ข่าย</td><td>LINE / Telegram ของ รพ. แม่ข่าย</td><td>ใบส่งต่อเมื่อติ๊ก “ส่งต่อ” ในการเยี่ยมบ้าน</td></tr>
+  </table>
+  <div class="warn"><b>⚠️ ข้อความแจ้งเตือนมีชื่อผู้ป่วยเต็ม</b>กลุ่ม LINE / Telegram ต้องมี<b>เฉพาะเจ้าหน้าที่</b>เท่านั้น ตรวจสมาชิกกลุ่มสม่ำเสมอ</div>
+</section>
+</div>
+
+<!-- ═════════ ความปลอดภัย / สิทธิ์ ═════════ -->
+<div class="page">
+<section>
+  <h2>สิทธิ์ของแต่ละบทบาท</h2>
+  <table>
+    <tr><th>บทบาท</th><th>ดูผู้ป่วย</th><th>บันทึก / แก้ไข</th><th>ลบ</th><th>ตั้งค่า / สมาชิก</th></tr>
+    <tr><td>แอดมิน (ต้องใช้ 2FA)</td><td>ทั้งหมด</td><td class="c">✅</td><td class="c">✅</td><td class="c">✅</td></tr>
+    <tr><td>เจ้าหน้าที่ (ต้องใช้ 2FA)</td><td>ทั้งหมด</td><td class="c">✅</td><td class="c">✅</td><td class="c">—</td></tr>
+    <tr><td>อสม.</td><td>เฉพาะหมู่บ้านตัวเอง</td><td class="c">✅</td><td>เฉพาะบันทึกเยี่ยมบ้าน</td><td class="c">—</td></tr>
+    <tr><td>ผู้สังเกตการณ์</td><td>หน้าภาพรวม</td><td class="c">—</td><td class="c">—</td><td class="c">—</td></tr>
+    <tr><td>รออนุมัติ / ถูกระงับ</td><td class="c">—</td><td class="c">—</td><td class="c">—</td><td class="c">—</td></tr>
+  </table>
+  <p>สิทธิ์ถูกบังคับที่ฐานข้อมูล (Row Level Security) ไม่ใช่แค่ซ่อนปุ่มบนหน้าจอ และระบบมีการป้องกันเพิ่มเติม:</p>
+  <ul>
+    <li>ทุกคนต้องกดยอมรับ<b>ข้อตกลงรักษาความลับ</b>ทุกครั้งที่เข้าใช้งาน ระบบบันทึกเวลาไว้เป็นหลักฐาน</li>
+    <li>แอดมิน<b>ระงับ / เปิดใช้งาน</b>บัญชีได้ในหน้าสมาชิก (ปุ่ม ⏸️ ระงับ) เช่น เมื่อ อสม. พ้นหน้าที่</li>
+    <li>ใส่รหัสผ่านผิด 5 ครั้ง บัญชีถูกล็อก 15 นาที</li>
+    <li>ไฟล์และรูปผู้ป่วยเปิดได้เฉพาะผู้ที่ล็อกอินแล้วเท่านั้น</li>
+    <li>ระบบสำรองข้อมูลผู้ป่วยอัตโนมัติทุกวัน เก็บย้อนหลัง 7 วัน</li>
+  </ul>
+</section>
+
+<section class="avoid">
+  <h2>ตรวจความปลอดภัยหลังติดตั้ง</h2>
+  <p>เปิดลิงก์นี้ในเบราว์เซอร์ (แทนค่า PROJECT และ ANON_KEY ของหน่วยงาน):</p>
+<pre>https://PROJECT.supabase.co/rest/v1/patients?select=id&amp;limit=1&amp;apikey=ANON_KEY</pre>
+  <ul>
+    <li>ได้ข้อความ <code>permission denied</code> → <b>ถูกต้อง</b> คนนอกอ่านข้อมูลไม่ได้</li>
+    <li>ได้รายการข้อมูลกลับมา → install.sql ไม่ครบ <b>หยุดใช้งาน แล้วรัน install.sql ใหม่</b></li>
+  </ul>
+</section>
+
+<section class="avoid">
+  <h2>ตรวจก่อนเปิดใช้งานจริง</h2>
+  <table class="check">
+    <tr><td>☐</td><td>install.sql ขึ้น <b>ติดตั้งเสร็จ</b></td></tr>
+    <tr><td>☐</td><td>ทดสอบลิงก์ตรวจความปลอดภัยแล้ว ได้ <code>permission denied</code></td></tr>
+    <tr><td>☐</td><td>ปิด Confirm email และเปิด TOTP แล้ว</td></tr>
+    <tr><td>☐</td><td>ติดตั้ง Edge Functions ครบ 2 ตัว ชื่อตรง</td></tr>
+    <tr><td>☐</td><td>config.js ใส่ <b>anon / publishable key</b> (ไม่ใช่ service_role)</td></tr>
+    <tr><td>☐</td><td>แอดมินคนแรกสมัครแล้ว และตั้ง 2FA แล้ว</td></tr>
+    <tr><td>☐</td><td>ตั้งผู้รับแจ้งเหตุข้อมูลรั่วไหลแล้ว</td></tr>
+    <tr><td>☐</td><td>อสม. ทุกคนกำหนดหมู่บ้านแล้ว · ลองเข้าด้วยบัญชี อสม. 1 คน เห็นเฉพาะหมู่บ้านตัวเอง</td></tr>
+    <tr><td>☐</td><td>กลุ่ม LINE / Telegram มีเฉพาะเจ้าหน้าที่</td></tr>
+    <tr><td>☐</td><td>ไม่มีไฟล์รายชื่อผู้ป่วยอยู่ใน repo GitHub</td></tr>
+  </table>
+</section>
+</div>
+
+<!-- ═════════ แก้ปัญหา ═════════ -->
+<div class="page">
+<section>
+  <h2>แก้ปัญหาที่พบบ่อย</h2>
+  <table class="trouble">
+    <tr><th style="width:38%">อาการ</th><th>วิธีแก้</th></tr>
+    <tr><td>เปิดเว็บแล้วขึ้น “ยังไม่ได้ตั้งค่า JitHome”</td><td>ยังไม่ได้แก้ <code>config.js</code> หรือใส่ค่าผิด → แก้ตามขั้นที่ 3 แล้วรอ 1–2 นาที</td></tr>
+    <tr><td>หน้าต่าง “Potential issue detected” ตอนรัน SQL</td><td>กด <span class="btn">Run without RLS</span> ได้เลย</td></tr>
+    <tr><td>ส่งแจ้งเตือนไม่ได้ / ขึ้น Unauthorized</td><td>ตรวจชื่อ Edge Function ให้ตรง (<code>notify</code>) และเปิด Verify JWT · ตรวจ token ที่บันทึกในหน้าแอดมิน</td></tr>
+    <tr><td>Telegram ขึ้น “chat not found”</td><td>ต้องเพิ่ม bot เข้ากลุ่มก่อน และใช้ Chat ID ของกลุ่ม (มักขึ้นต้นด้วย <code>-</code>)</td></tr>
+    <tr><td>ใส่รหัสผิด 5 ครั้ง บัญชีถูกล็อก</td><td>รอ 15 นาที หรือแอดมินปลดล็อกในหน้าแอดมิน หรือรันใน SQL Editor:<pre>DELETE FROM public.login_lockouts WHERE email = 'อีเมลที่ถูกล็อก';</pre></td></tr>
+    <tr><td>ลิงก์ “ลืมรหัสผ่าน” ในอีเมลกดแล้วไม่ไปหน้าตั้งรหัสใหม่</td><td>ยังไม่ได้ทำขั้นที่ 4 (Site URL / Redirect URLs)</td></tr>
+    <tr><td>ตั้งรหัสผ่านใหม่แล้วขึ้น “AAL2 session is required”</td><td>บัญชีนั้นเปิด 2FA → กรอกรหัส 6 หลักจากแอป Authenticator ในช่องที่ขึ้นมา แล้วกดบันทึกอีกครั้ง</td></tr>
+    <tr><td>อีเมลขึ้น “invalid format”</td><td>มีช่องว่างหรือตัวอักษรเกิน มักเกิดจากการคัดลอกวาง → ลบแล้วพิมพ์ใหม่เอง</td></tr>
+    <tr><td>อสม. เข้าได้ แต่ไม่เห็นผู้ป่วยเลย</td><td>ชื่อหมู่บ้านของ อสม. สะกดไม่ตรงกับทะเบียนผู้ป่วย (เช่น “หมู่ 1” กับ “หมู่1”) → แก้หมู่บ้านในหน้าสมาชิก</td></tr>
+    <tr><td>อสม. เห็นผู้ป่วยทุกหมู่บ้าน</td><td>ยังไม่ได้กำหนดหมู่บ้านให้ อสม. คนนั้น</td></tr>
+    <tr><td>กดยอมรับข้อตกลงแล้วกลับมาหน้าเดิม / หน้าเว็บไม่อัปเดต</td><td>มือถือยังใช้เวอร์ชันเก่า → ปิดแอปให้สนิทแล้วเปิดใหม่ หรือรีเฟรช 2–3 ครั้ง</td></tr>
+    <tr><td>Supabase แจ้งว่าโปรเจกต์ถูกพัก (paused)</td><td>แผนฟรีพักโปรเจกต์เมื่อไม่มีการใช้งานราว 1 สัปดาห์ → เข้า Supabase กด Restore</td></tr>
+  </table>
+</section>
+
+<section class="avoid">
+  <h2>หมายเหตุเรื่องค่าใช้จ่าย</h2>
+  <p>แผนฟรีของ Supabase เพียงพอสำหรับ รพ.สต. หนึ่งแห่ง แต่มีข้อจำกัด เช่น โปรเจกต์ถูกพักเมื่อไม่มีการใช้งานต่อเนื่อง และจำนวนโปรเจกต์ฟรีต่อบัญชีมีจำกัด
+  ตรวจรายละเอียดล่าสุดที่ <span class="mono">supabase.com/pricing</span> ก่อนตัดสินใจ</p>
+</section>
+
+<section class="avoid">
+  <h2>อัปเดตเวอร์ชันใหม่</h2>
+  <p>เมื่อชุดติดตั้งต้นแบบมีเวอร์ชันใหม่ ให้คัดลอกไฟล์ <code>app.js</code> <code>index.html</code> <code>style.css</code> <code>sw.js</code>
+  ไปทับใน repo ของหน่วยงาน (<b>ไม่ต้องทับ config.js</b>) และรันไฟล์ใน <code>sql/upgrades/</code> (ถ้ามี) ตามลำดับ</p>
+  <p class="footer-note">คู่มือฉบับล่าสุดอยู่ที่ github.com/songkon202-sara/jithome-template (หน้า README)</p>
+</section>
+
+
+</div>
+
+</body>
+</html>
