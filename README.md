@@ -99,6 +99,32 @@ Supabase → **Authentication → URL Configuration**
 
 ---
 
+## ติดตั้งด้วย Claude Code (ทางเลือก)
+
+ถ้าหน่วยงานใช้ **Claude Code** ให้ Claude อ่านคู่มือนี้และพาติดตั้งทีละขั้นได้
+Claude แก้ `config.js` และส่งขึ้น GitHub ของหน่วยงานได้ แต่ส่วนที่ต้องกดใน **Supabase** (install.sql, Edge Functions, ตั้งค่า),
+การกด **Use this template** และการเปิด **GitHub Pages** เจ้าหน้าที่ต้องกดเอง
+
+**ข้อความสำหรับวางในแชท Claude Code:**
+```
+ช่วยติดตั้งระบบ JitHome ให้ รพ.สต.[ชื่อ รพ.สต.] ตามคู่มือใน
+https://github.com/songkon202-sara/jithome-template
+
+- ตอบเป็นภาษาไทย อธิบายง่าย ๆ ทีละขั้น ฉันไม่ใช่โปรแกรมเมอร์
+- ส่วนที่ต้องกดใน Supabase / GitHub ให้บอกว่ากดปุ่มไหน แล้วรอฉันส่งภาพหน้าจอ
+- หมู่บ้านในเขตรับผิดชอบ: [หมู่ 1, หมู่ 2, ...]
+- ห้ามใส่ service_role key ในไฟล์ใด ๆ และห้ามนำไฟล์รายชื่อผู้ป่วยขึ้น GitHub
+```
+
+**ให้ Claude แก้ไฟล์ใน repo ของหน่วยงานได้:** สร้าง repo จาก **Use this template** →
+[github.com/settings/installations](https://github.com/settings/installations) → **Claude** → **Configure** →
+**Select repositories** เลือก repo ของหน่วยงาน → **Save** (ถ้ามี "requesting an update to its permissions" กด **Review request → Accept**)
+→ เปิดแชท Claude Code **ห้องใหม่** แล้วเลือก repo นั้น
+
+> ⛔ **ห้ามส่งในแชท:** service_role key / secret key, รหัสผ่านฐานข้อมูล, ไฟล์รายชื่อผู้ป่วย — ใช้แค่ Project URL และ anon key
+
+---
+
 ## การแจ้งเตือน (ไม่บังคับ)
 
 | ช่องทาง | ตั้งค่าที่ | ส่งอะไร |

@@ -113,6 +113,43 @@
   <div class="note"><b>💡 แนะนำ</b>ทำทุกขั้นบนคอมพิวเตอร์ และเปิดคู่มือนี้คู่กันไป ทำตามลำดับ อย่าข้ามขั้น</div>
 </section>
 
+
+<section class="avoid" style="break-before: page">
+  <h2>ทางเลือก · ติดตั้งด้วย Claude Code</h2>
+  <p>ถ้าหน่วยงานใช้ <b>Claude Code</b> ให้ Claude อ่านคู่มือนี้และพาติดตั้งทีละขั้นเป็นภาษาไทยได้
+  แต่ Claude <b>ทำแทนได้บางส่วน</b> อีกส่วนเจ้าหน้าที่ต้องกดเองในหน้าเว็บ</p>
+  <table>
+    <tr><th>งาน</th><th class="c">Claude ทำได้ไหม</th></tr>
+    <tr><td>อ่านชุดติดตั้งและคู่มือจากลิงก์</td><td class="c">✅</td></tr>
+    <tr><td>อธิบายและพาทำทีละขั้น · ดูภาพหน้าจอเวลาติดปัญหา</td><td class="c">✅</td></tr>
+    <tr><td>แก้ <code>config.js</code> แล้วส่งขึ้น GitHub ของหน่วยงาน<br><span style="color:var(--muted)">(หลังเจ้าหน้าที่สร้าง repo และให้สิทธิ์แอป Claude ใน GitHub แล้ว)</span></td><td class="c">✅</td></tr>
+    <tr><td>กด Use this template / สร้าง repo ใหม่</td><td class="c">❌ เจ้าหน้าที่กดเอง</td></tr>
+    <tr><td>รัน install.sql · ติดตั้ง Edge Functions · ตั้งค่าใน Supabase</td><td class="c">❌ เจ้าหน้าที่กดเอง</td></tr>
+    <tr><td>เปิด GitHub Pages</td><td class="c">❌ เจ้าหน้าที่กดเอง</td></tr>
+  </table>
+
+  <h3>ข้อความสำหรับวางในแชท Claude Code</h3>
+<pre>ช่วยติดตั้งระบบ JitHome ให้ รพ.สต.[ชื่อ รพ.สต.] ตามคู่มือใน
+https://github.com/songkon202-sara/jithome-template
+
+- ตอบเป็นภาษาไทย อธิบายง่าย ๆ ทีละขั้น ฉันไม่ใช่โปรแกรมเมอร์
+- ส่วนที่ต้องกดใน Supabase / GitHub ให้บอกว่ากดปุ่มไหน แล้วรอฉันส่งภาพหน้าจอ
+- หมู่บ้านในเขตรับผิดชอบ: [หมู่ 1, หมู่ 2, ...]
+- ห้ามใส่ service_role key ในไฟล์ใด ๆ และห้ามนำไฟล์รายชื่อผู้ป่วยขึ้น GitHub</pre>
+
+  <h3>ให้ Claude แก้ไฟล์ใน GitHub ของหน่วยงานได้</h3>
+  <ol>
+    <li>สร้าง repo ของหน่วยงานจากปุ่ม <span class="btn">Use this template</span> (ขั้นที่ 3)</li>
+    <li>เปิด <span class="mono">github.com/settings/installations</span> → <b>Claude</b> → <span class="btn">Configure</span></li>
+    <li><b>Repository access</b> → <span class="btn">Select repositories</span> → เลือก repo ของหน่วยงาน → <span class="btn">Save</span></li>
+    <li>ถ้ามีกรอบ “Claude is requesting an update to its permissions” → <span class="btn">Review request</span> → <span class="btn">Accept</span></li>
+    <li>เปิดแชท Claude Code <b>ห้องใหม่</b> แล้วเลือก repo ของหน่วยงาน<br><span style="color:var(--muted)">(ห้องแชทที่เปิดไว้ก่อนให้สิทธิ์จะยังส่งไฟล์ขึ้น GitHub ไม่ได้)</span></li>
+  </ol>
+
+  <div class="danger"><b>⛔ ห้ามส่งสิ่งเหล่านี้ในแชท</b>
+  service_role key / secret key · รหัสผ่านฐานข้อมูล · ไฟล์รายชื่อผู้ป่วย<br>
+  ใช้แค่ Project URL และ anon key ก็พอ · นำเข้ารายชื่อผู้ป่วยในหน้าแอดมินของเว็บหน่วยงานเท่านั้น</div>
+</section>
 </div>
 
 <!-- ═════════ ขั้นที่ 1 ═════════ -->
