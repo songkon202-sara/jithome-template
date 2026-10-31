@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>JitHome — ระบบติดตามผู้ป่วยจิตเวช</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#0a7ea4">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src https://fonts.gstatic.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co; img-src 'self' data: blob: https://*.supabase.co; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="JitHome">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css" integrity="sha384-RkASv+6KfBMW9eknReJIJ6b3UnjKOKC5bOUaNgIY778NFbQ8MtWq9Lr/khUgqtTt" crossorigin="anonymous">
+  <style>
+    .flatpickr-calendar{font-family:'Sarabun',sans-serif;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.15);border:1px solid #e5e7eb}
+    .flatpickr-months{background:var(--primary,#0a7ea4);border-radius:11px 11px 0 0}
+    .flatpickr-month,.flatpickr-current-month,.flatpickr-monthDropdown-months,.flatpickr-prev-month,.flatpickr-next-month{color:#fff!important;fill:#fff!important}
+    .flatpickr-current-month input.cur-year{color:#fff!important}
+    .flatpickr-weekdays{background:var(--primary,#0a7ea4)}
+    span.flatpickr-weekday{background:var(--primary,#0a7ea4);color:#fff;font-weight:700;font-size:12px}
+    .flatpickr-day.selected,.flatpickr-day.selected:hover{background:var(--primary,#0a7ea4);border-color:var(--primary,#0a7ea4);color:#fff;font-weight:700}
+    .flatpickr-day:hover{background:#e0f2fe;border-color:#e0f2fe}
+    .flatpickr-day.today{border-color:var(--primary,#0a7ea4);color:var(--primary,#0a7ea4);font-weight:700}
+    .flatpickr-day.today.selected{color:#fff}
+    .flatpickr-input{cursor:pointer}
+    .flatpickr-input[readonly]{background:#fff}
+  </style>
+</head>
+<body>
+<div id="root">
+
+  <!-- Desktop Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div style="font-size:20px;font-weight:800;color:var(--primary)">🏥 JitHome</div>
+      <div id="sidebar-sub" style="font-size:11px;color:var(--text3);margin-top:2px;white-space:pre-line;line-height:1.4">ระบบติดตามผู้ป่วยจิตเวช</div>
+    </div>
+    <nav class="sidebar-nav">
+      <a class="sidebar-nav-item active" data-page="dashboard" onclick="navigate('dashboard');return false" href="#dashboard">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        หน้าหลัก
+      </a>
+      <a class="sidebar-nav-item" data-page="patients" onclick="navigate('patients');return false" href="#patients">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        ผู้ป่วย
+      </a>
+      <a class="sidebar-nav-item" data-page="timeline" onclick="navigate('timeline');return false" href="#timeline">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        ตารางนัด
+      </a>
+      <a class="sidebar-nav-item" data-page="overview" onclick="navigate('overview');return false" href="#overview">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        ภาพรวม
+      </a>
+      <a class="sidebar-nav-item" data-page="visit" onclick="navigate('visit');return false" href="#visit">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        เยี่ยมบ้าน
+      </a>
+      <a class="sidebar-nav-item" data-page="admin" onclick="navigate('admin');return false" href="#admin">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        แอดมิน
+      </a>
+      <a class="sidebar-nav-item" data-page="members" onclick="navigate('members');return false" href="#members">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        จัดการสมาชิก
+      </a>
+      <a class="sidebar-nav-item" data-page="guide" onclick="navigate('guide');return false" href="#guide">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        คู่มือ
+      </a>
+      <a class="sidebar-nav-item" data-page="audit" onclick="navigate('audit');return false" href="#audit">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        Audit Log
+      </a>
+    </nav>
+    <div style="padding:12px 16px;border-top:1px solid var(--border)">
+      <div id="sidebar-user-info" style="font-size:11px;color:var(--text3);margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div>
+      <button onclick="logoutUser()" style="width:100%;display:flex;align-items:center;gap:8px;padding:8px 12px;background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;color:#b91c1c;font-size:13px;font-weight:700;cursor:pointer;font-family:'Sarabun',sans-serif">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        ออกจากระบบ
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="app-main">
+    <div class="app-header">
+      <div>
+        <div class="header-title" id="header-title">JitHome</div>
+        <div class="header-sub" id="header-sub" style="white-space:pre-line;line-height:1.4">ระบบติดตามผู้ป่วยจิตเวช</div>
+      </div>
+      <div class="header-right">
+        <div class="notif-btn" onclick="navigate('dashboard')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <div class="notif-badge" id="notif-badge" style="display:none">0</div>
+        </div>
+        <div class="avatar">อส</div>
+        <button onclick="logoutUser()" class="header-logout-btn" title="ออกจากระบบ">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          <span>ออก</span>
+        </button>
+      </div>
+    </div>
+    <div id="page-content">
+      <div style="text-align:center;padding:80px 20px;color:var(--text3)">
+        <div style="font-size:32px;margin-bottom:12px">⏳</div>
+        <div>กำลังโหลด...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Nav (mobile) -->
+  <nav class="bottom-nav">
+    <button class="nav-item active" data-page="dashboard" onclick="navigate('dashboard')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      หน้าหลัก
+    </button>
+    <button class="nav-item" data-page="patients" onclick="navigate('patients')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+      ผู้ป่วย
+    </button>
+    <button class="nav-item" data-page="timeline" onclick="navigate('timeline')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      ตารางนัด
+    </button>
+    <button class="nav-item" data-page="overview" onclick="navigate('overview')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      ภาพรวม
+    </button>
+    <button class="nav-item" data-page="visit" onclick="navigate('visit')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+      เยี่ยมบ้าน
+    </button>
+    <button class="nav-item" data-page="admin" onclick="navigate('admin')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      แอดมิน
+    </button>
+    <button class="nav-item" data-page="members" onclick="navigate('members')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      สมาชิก
+    </button>
+    <button class="nav-item" data-page="guide" onclick="navigate('guide')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      คู่มือ
+    </button>
+    <button class="nav-item" data-page="audit" onclick="navigate('audit')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      Audit Log
+    </button>
+    <button class="nav-item nav-logout" onclick="logoutUser()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      ออกจากระบบ
+    </button>
+  </nav>
+</div>
+
+<!-- Patient Modal -->
+<div id="modal-overlay" class="modal-overlay" style="display:none" onclick="if(event.target===this)closeModal()">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<!-- Visit Modal -->
+<div id="visit-overlay" class="modal-overlay" style="display:none" onclick="if(event.target===this)closeVisitModal()">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div id="visit-content"></div>
+  </div>
+</div>
+
+<!-- Auth Wall -->
+<div id="auth-wall" style="display:none;position:fixed;inset:0;background:linear-gradient(135deg,#e0f2fe,#f0f9ff);z-index:9999;align-items:center;justify-content:center;padding:20px">
+  <div style="background:#fff;border-radius:20px;padding:32px 24px;width:100%;max-width:380px;box-shadow:0 8px 32px rgba(10,126,164,.15)">
+    <div id="auth-content"></div>
+  </div>
+</div>
+
+<!-- Privacy Notice (PDPA) -->
+<div id="privacy-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:9998;align-items:center;justify-content:center;padding:16px">
+  <div style="background:#fff;border-radius:16px;max-width:460px;width:100%;max-height:88vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.3)">
+    <div style="padding:24px 24px 16px;border-bottom:1px solid #e2e8f0">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:24px">🔒</span>
+        <div>
+          <div style="font-size:17px;font-weight:700;color:#0f172a">นโยบายความเป็นส่วนตัว</div>
+          <div style="font-size:11px;color:#64748b">พ.ร.บ.คุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562 (PDPA)</div>
+        </div>
+      </div>
+    </div>
+    <div style="padding:16px 24px;font-size:12px;color:#475569;line-height:1.75">
+      <div style="font-size:13px;font-weight:700;color:#0f172a;margin:0 0 5px">1. ผู้ควบคุมข้อมูลส่วนบุคคล</div>
+      <p style="margin:0 0 12px">ระบบ JitHome ดำเนินการโดยโรงพยาบาลส่งเสริมสุขภาพตำบล ทำหน้าที่เป็นผู้ควบคุมข้อมูลส่วนบุคคลตาม พ.ร.บ.คุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562</p>
+      <div style="font-size:13px;font-weight:700;color:#0f172a;margin:0 0 5px">2. ข้อมูลที่เก็บรวบรวม</div>
+      <ul style="margin:0 0 12px;padding-left:18px">
+        <li>ชื่อ-นามสกุล ที่อยู่ เบอร์โทรศัพท์</li>
+        <li>เลขบัตรประจำตัวประชาชน</li>
+        <li>ข้อมูลสุขภาพและประวัติการรักษาจิตเวช</li>
+        <li>ประวัติการเยี่ยมบ้านและการฉีดยา</li>
+        <li>รูปถ่ายและลายเซ็นยินยอม</li>
+      </ul>
+      <div style="font-size:13px;font-weight:700;color:#0f172a;margin:0 0 5px">3. วัตถุประสงค์การใช้ข้อมูล</div>
+      <p style="margin:0 0 12px">เพื่อติดตามดูแลผู้ป่วยจิตเวชในชุมชน จัดการนัดหมาย บันทึกประวัติการรักษา และประสานงานระหว่างเจ้าหน้าที่สาธารณสุขกับ อสม.</p>
+      <div style="font-size:13px;font-weight:700;color:#0f172a;margin:0 0 5px">4. ฐานทางกฎหมาย</div>
+      <p style="margin:0 0 12px">การประมวลผลข้อมูลสุขภาพอยู่บนฐานประโยชน์สาธารณะด้านสาธารณสุข และความจำเป็นด้านการรักษาพยาบาล ตามมาตรา 26 แห่ง พ.ร.บ.คุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562</p>
+      <div style="font-size:13px;font-weight:700;color:#0f172a;margin:0 0 5px">5. การเปิดเผยข้อมูล</div>
+      <p style="margin:0 0 12px">ไม่เปิดเผยข้อมูลแก่บุคคลภายนอก ยกเว้นหน่วยงานสาธารณสุขที่เกี่ยวข้องตามที่กฎหมายกำหนด</p>
+      <div style="font-size:13px;font-weight:700;color:#0f172a;margin:0 0 5px">6. ระยะเวลาเก็บข้อมูล</div>
+      <p style="margin:0 0 12px">เก็บรักษาข้อมูลตามระเบียบกระทรวงสาธารณสุขว่าด้วยการเก็บรักษาข้อมูลสุขภาพ</p>
+      <div style="font-size:13px;font-weight:700;color:#0f172a;margin:0 0 5px">7. สิทธิ์ของท่าน</div>
+      <ul style="margin:0 0 12px;padding-left:18px">
+        <li>สิทธิ์เข้าถึงและขอสำเนาข้อมูลส่วนบุคคล</li>
+        <li>สิทธิ์แก้ไขข้อมูลที่ไม่ถูกต้อง</li>
+        <li>สิทธิ์ขอลบหรือทำให้ข้อมูลไม่ระบุตัวตน</li>
+        <li>สิทธิ์คัดค้านการประมวลผลข้อมูล</li>
+        <li>สิทธิ์ร้องเรียนต่อสำนักงานคณะกรรมการคุ้มครองข้อมูลส่วนบุคคล</li>
+      </ul>
+      <div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:10px 12px;font-size:11px;color:#0369a1">
+        📞 สอบถามหรือใช้สิทธิ์: ติดต่อผู้ดูแลระบบ JitHome ในหน่วยงานของท่าน
+      </div>
+    </div>
+    <div style="padding:14px 24px 24px;border-top:1px solid #e2e8f0">
+      <div style="font-size:11px;color:#94a3b8;text-align:center;margin-bottom:10px">กรุณาอ่านและรับทราบนโยบายก่อนเข้าใช้งานระบบ</div>
+      <button onclick="acceptPrivacyConsent()" style="width:100%;padding:12px;background:#0d9488;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Sarabun',sans-serif">✅ รับทราบและยอมรับนโยบาย</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Patient Modal -->
+<div id="addpt-overlay" class="modal-overlay" style="display:none" onclick="if(event.target===this)closeAddPatient()">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div id="addpt-content"></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.1/dist/umd/supabase.js" integrity="sha384-0x8XPoHt08aHZj+RHs8ojmhZ5IDsTLjPgblgWdriayWriqv9dic3Vkv1K2+UqgZV" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.js" integrity="sha384-sWZVghjWvu7FLPv6FOuk8kWJYnlZApKfPfxhdPgM1gcwvD0ys/iFrhE3Xr76HJV3" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/l10n/th.js" integrity="sha384-E6OVFg1zUc/pckGxry0YZ6VeZ1E17l7Jl8ZQx58jbEfxxkz9LqknQhiIrA9zg/8b" crossorigin="anonymous"></script>
+<script src="config.js?v=1"></script>
+<script src="app.js?v=20261031a"></script>
+<script>
+  if('serviceWorker' in navigator){
+    window.addEventListener('load',()=>{
+      navigator.serviceWorker.register('sw.js')
+        .catch(()=>{})
+    })
+  }
+</script>
+</body>
+</html>
